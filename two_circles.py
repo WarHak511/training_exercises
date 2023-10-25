@@ -1,25 +1,33 @@
-# Исходными данными являются координаты точки
-# M (x, y). Составьте программу, которая определяет,
-# принадлежит ли точка М области пересечения окружностей
-# с центрами в точках с координатами (-1,0) и (0, 0)
+import matplotlib.pyplot as plt
+import numpy as np
 
-import math
+theta = np.linspace(0, 2 * np.pi, 100)
 
-# Координаты центров окружностей и их радиус
-center1 = (-1, 0)
-center2 = (0, 0)
-radius = 1
+# Координаты x и y для окружности радиусом 1 с центром в (0,0)
+x1 = np.cos(theta)
+y1 = np.sin(theta)
 
-# Ввод координат точки M
-x_m = float(input("Введите координату x для точки M: "))
-y_m = float(input("Введите координату y для точки M: "))
+# Координаты x и y для окружности радиусом 1 с центром в (-1,0)
+x2 = np.cos(theta) - 1
+y2 = np.sin(theta)   # Смещаем центр окружности вниз на 1 по оси ординат
 
-# Расстояния от точки M до центров окружностей
-distance1 = math.sqrt((x_m - center1[0])**2 + (y_m - center1[1])**2)
-distance2 = math.sqrt((x_m - center2[0])**2 + (y_m - center2[1])**2)
-
-# Проверка вхождения точки M в область пересечения
-if distance1 <= radius and distance2 <= radius:
-    print("Точка M входит в область пересечения двух окружностей.")
-else:
-    print("Точка M не входит в область пересечения двух окружностей.")
+# Строим графики окружностей и осей
+plt.figure(figsize=(6, 6))  # чтобы график был круглым
+plt.plot(x1, y1, label="Окружность (0,0) радиусом 1")
+plt.plot(x2, y2, label="Окружность (-1,0) радиусом 1")
+intersection_x = np.linspace(-1, 0, 100)
+intersection_y = np.sqrt(1 - (intersection_x + 1)**2)
+intersection_z = np.sqrt(1 - (intersection_x)**2)
+plt.fill_between(intersection_x, -intersection_y, intersection_y,
+                 -intersection_z, color='red', alpha=0.3)
+plt.axhline(0, color='black', linewidth=2)  # Горизонтальная ось (x)
+plt.axvline(0, color='black', linewidth=2)  # Вертикальная ось (y)
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Окружности с центрами в (0,0) и (-1,0) радиусом 1")
+plt.legend()
+plt.grid(True)
+# устанавливаем равное масштабирование осей
+# для корректного отображения окружностей
+plt.gca().set_aspect('equal', adjustable='datalim')
+plt.show()
